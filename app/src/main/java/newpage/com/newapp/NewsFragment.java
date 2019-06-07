@@ -83,25 +83,38 @@ public class NewsFragment extends Fragment implements Runnable{
             Bundle bundle = new Bundle();
             //提取文章链接
             Elements links = doc.select("a.red");
+            Elements dateElements = doc.select("span.f-right");
+            Log.i(TAG,"dateElements:"+dateElements.size() );
             //定义文章标题列表
-            String title[] = new String[links.size()];
+            String titles[] = new String[links.size()];
+            //定义具体链接
+            String linkStrs[] = new String[links.size()];
+            //定义日期列表
+            String dates[] = new String[dateElements.size()];
 
-            int i=0;
+            int i = 0;
             for(Element link:links){
-                title[i] = link.text();
+                titles[i] = link.text();
+                linkStrs[i] = "https://www.swufe.edu.cn/"+link.attr("href");
+                Log.i(TAG, "run: titles=" + titles[i]);
+                Log.i(TAG, "run: link=" + linkStrs[i]);
                 i++;
             }
+            //Log.i(TAG, "dateElements=" + dateElements);
+
+
+           for(int j=0;j<dateElements.size();j++){
+               dates[j] = dateElements.get(j).text();
+               Log.i(TAG, "dates=" + dates[j]);
+
+            }
+
+
             //存入bundle中
-            bundle.putStringArray("title",title);
+            bundle.putStringArray("title",titles);
+            bundle.putStringArray("linStrs",linkStrs);
+            bundle.putStringArray("dates",dates);
 
-
-
-
-
-
-
-
-            Log.i(TAG, "run: html=" + html);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
