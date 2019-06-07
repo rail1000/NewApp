@@ -32,26 +32,26 @@
         android:id="@+id/bottomGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.8"
+        android:layout_weight="0"
         android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/radioNews"
             style="@style/rg_btn_style"
-            android:drawableTop="@drawable/swufe_news"
+
             android:text="@string/raido_news_lable" />
 
         <RadioButton
             android:id="@+id/radioInfo"
             style="@style/rg_btn_style"
 
-            android:drawableTop="@drawable/swufe_info"
+
             android:text="@string/raido_info_lable" />
 
         <RadioButton
             android:id="@+id/radioLecture"
             style="@style/rg_btn_style"
-            android:drawableTop="@drawable/swufe_lecture"
+
             android:text="@string/raido_lecture_lable" />
 
     </RadioGroup>

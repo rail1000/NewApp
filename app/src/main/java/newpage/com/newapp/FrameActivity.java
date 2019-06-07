@@ -65,12 +65,12 @@ public class FrameActivity extends FragmentActivity {
                     case R.id.radioInfo:
                         //显示info
                         fragmentTransaction.show(mFragments[1]).commit();
-                        rbtNews.setBackgroundResource(R.drawable.shape3);
+                        rbtInfo.setBackgroundResource(R.drawable.shape3);
                         break;
                     case R.id.radioLecture:
                         //显示lecture
                         fragmentTransaction.show(mFragments[2]).commit();
-                        rbtNews.setBackgroundResource(R.drawable.shape3);
+                        rbtLecture.setBackgroundResource(R.drawable.shape3);
                         break;
                     default:
                         break;
