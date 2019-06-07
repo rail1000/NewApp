@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">NewApp</string>
+    <string name="raido_news_lable">西财新闻</string>
+    <string name="raido_info_lable">通知公告</string>
+    <string name="raido_lecture_lable">学术讲座</string>
+</resources>

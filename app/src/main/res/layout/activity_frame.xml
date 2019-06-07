@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".FrameActivity" >
+
+    <fragment
+        android:id="@+id/fragment_news"
+        android:name="newpage.com.newapp.NewsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="10" />
+
+    <fragment
+        android:id="@+id/fragment_info"
+        android:name="newpage.com.newapp.InfoFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="10" />
+
+    <fragment
+        android:id="@+id/fragment_lecture"
+        android:name="newpage.com.newapp.LectureFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="10" />
+
+    <RadioGroup
+        android:id="@+id/bottomGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioNews"
+            style="@style/rg_btn_style"
+            android:drawableTop="@drawable/swufe_news"
+            android:text="@string/raido_news_lable" />
+
+        <RadioButton
+            android:id="@+id/radioInfo"
+            style="@style/rg_btn_style"
+
+            android:drawableTop="@drawable/swufe_info"
+            android:text="@string/raido_info_lable" />
+
+        <RadioButton
+            android:id="@+id/radioLecture"
+            style="@style/rg_btn_style"
+            android:drawableTop="@drawable/swufe_lecture"
+            android:text="@string/raido_lecture_lable" />
+
+    </RadioGroup>
+</LinearLayout>
