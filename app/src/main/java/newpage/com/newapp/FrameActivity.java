@@ -1,6 +1,8 @@
 package newpage.com.newapp;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -11,26 +13,41 @@ import android.view.Window;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 //import newpage.com.newapp.R;
 
 
-public class FrameActivity extends FragmentActivity {
+public class FrameActivity extends FragmentActivity{
+    private static final String TAG ="run:";
 
+    //Fragment变量
     private Fragment mFragments[];
     private RadioGroup radioGroup;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     //private RadioButton rbtHome,rbtFunc,rbtSetting;
-
+    //
     RadioButton rbtNews;
     RadioButton rbtInfo;
     RadioButton rbtLecture;
 
+    //线程变量
+    Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_frame);
+
+
+
         mFragments = new Fragment[3];
         fragmentManager = getSupportFragmentManager();
         mFragments[0] = fragmentManager.findFragmentById(R.id.fragment_news);
@@ -77,6 +94,11 @@ public class FrameActivity extends FragmentActivity {
                 }
             }
         });
+
+
+
+
+
     }
 /*
     @Override
@@ -86,4 +108,7 @@ public class FrameActivity extends FragmentActivity {
         return true;
     }
 */
+
+
+
 }
