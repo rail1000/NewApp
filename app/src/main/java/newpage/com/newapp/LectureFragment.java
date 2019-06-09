@@ -1,8 +1,10 @@
 package newpage.com.newapp;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,20 +27,65 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class LectureFragment extends Fragment implements Runnable{
-    private static final String TAG ="run:";
+public class LectureFragment extends Fragment {
+    private static final String TAG = "run:";
     //变量
     Handler handler;
-
+    String[] titles;
+    String[] dates;
+    String[] links;
+    ListView list;
+    List mData = new ArrayList();
 
     //重载onCreateView
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.swufe_lecture, container);
+        //Thread t = new Thread(this);
+        //t.start();
+        if (Build.VERSION.SDK_INT >= 11) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().
+                    detectDiskWrites().detectNetwork().penaltyLog().build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
+        }
+
+
+        Bundle str = get();
+        titles = str.getStringArray("titles");
+        links = str.getStringArray("linStrs");
+        dates = str.getStringArray("dates");
+
+
+
+        View view = inflater.inflate(R.layout.swufe_lecture, null);
+        list = (ListView) view.findViewById(R.id.list_lecture);
+
+        try {
+            for (int i = 0; i < titles.length; i++) {
+
+                Map<String, String> item = new HashMap<String, String>();
+                //Log.i(TAG, "mData = " + titles[i]);
+                item.put("title", titles[i]);
+
+                item.put("date", dates[i]);
+                mData.add(item);
+
+            }
+        }catch (Exception e){
+            Log.i(TAG, "mData E= " + e);
+        }
+        SimpleAdapter adapter = new SimpleAdapter(getActivity(), mData,
+                android.R.layout.simple_expandable_list_item_2,
+                new String[]{"title", "date"}, new int[]{android.R.id.text1, android.R.id.text2});
+        list.setAdapter(adapter);
+        return view;
     }
 
     //重载onActivityCreated方法,完成对控件的初始化，添加事件监听等
@@ -44,37 +93,19 @@ public class LectureFragment extends Fragment implements Runnable{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-        Thread t = new Thread(this);
-        t.start();
-
-        handler = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                if(msg.what==5){
-                    String str = (String) msg.obj;
-                    Log.i(TAG, "handleMessage: getMessage msg = " + str);
-                    //show.setText(str);
-                }
-                super.handleMessage(msg);
-            }
-
-        };
-
-
-
     }
 
 
     //run方法，实现子线程
-    @Override
-    public void run() {
+
+    public Bundle get() {
 
         //获取网络数据
         URL url = null;
         try {
-            url = new URL("https://www.swufe.edu.cn/1456.html");
+            url = new URL("https://www.swufe.edu.cn/1458.html");
             HttpsURLConnection http = (HttpsURLConnection) url.openConnection();
+            Log.i(TAG, "http= " + http.getResponseCode());
             InputStream in = http.getInputStream();
 
             String html = inputStream2String(in);
@@ -84,7 +115,7 @@ public class LectureFragment extends Fragment implements Runnable{
             //提取文章链接
             Elements links = doc.select("a.red");
             Elements dateElements = doc.select("span.f-right");
-            Log.i(TAG,"dateElements:"+dateElements.size() );
+            Log.i(TAG, "dateElements:" + dateElements.size());
             //定义文章标题列表
             String titles[] = new String[links.size()];
             //定义具体链接
@@ -93,27 +124,30 @@ public class LectureFragment extends Fragment implements Runnable{
             String dates[] = new String[dateElements.size()];
 
             int i = 0;
-            for(Element link:links){
+            for (Element link : links) {
                 titles[i] = link.text();
-                linkStrs[i] = "https://www.swufe.edu.cn/"+link.attr("href");
-                Log.i(TAG, "run: titles=" + titles[i]);
-                Log.i(TAG, "run: link=" + linkStrs[i]);
+                linkStrs[i] = "https://www.swufe.edu.cn/" + link.attr("href");
+
                 i++;
             }
-            //Log.i(TAG, "dateElements=" + dateElements);
 
 
-            for(int j=0;j<dateElements.size();j++){
+
+            for (int j = 0; j < dateElements.size(); j++) {
                 dates[j] = dateElements.get(j).text();
-                Log.i(TAG, "dates=" + dates[j]);
+
 
             }
 
 
             //存入bundle中
-            bundle.putStringArray("title",titles);
-            bundle.putStringArray("linStrs",linkStrs);
-            bundle.putStringArray("dates",dates);
+
+            bundle.putStringArray("titles", titles);
+            bundle.putStringArray("linStrs", linkStrs);
+            bundle.putStringArray("dates", dates);
+
+
+            return bundle;
 
 
         } catch (MalformedURLException e) {
@@ -121,11 +155,15 @@ public class LectureFragment extends Fragment implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        catch (Exception e){
+            Log.i(TAG, "httpE= " + e);
+        }
 
 
-
-
+        return null;
     }
+
+
     //将输入流InputStream转换为String
     private String inputStream2String(InputStream inputStream) throws IOException {
         final int bufferSize = 1024;
