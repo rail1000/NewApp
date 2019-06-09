@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -82,8 +81,8 @@ public class NewsFragment extends Fragment {
             Log.i(TAG, "mData E= " + e);
         }
         SimpleAdapter adapter = new SimpleAdapter(getActivity(), mData,
-                android.R.layout.simple_expandable_list_item_2,
-                new String[]{"title", "date"}, new int[]{android.R.id.text1, android.R.id.text2});
+                R.layout.list_item,
+                new String[]{"title", "date"}, new int[]{R.id.itemTitle, R.id.itemDate});
         list.setAdapter(adapter);
         return view;
     }
