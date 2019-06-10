@@ -1,5 +1,6 @@
 package newpage.com.newapp;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,8 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -34,8 +37,8 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class InfoFragment extends Fragment {
-    private static final String TAG = "info_run:";
+public class InfoFragment extends Fragment implements AdapterView.OnItemClickListener {
+    private static final String TAG = "run:";
     //变量
     Handler handler;
     String[] titles;
@@ -72,6 +75,7 @@ public class InfoFragment extends Fragment {
 
                 Map<String, String> item = new HashMap<String, String>();
                 //Log.i(TAG, "mData = " + titles[i]);
+
                 item.put("title", titles[i]);
 
                 item.put("date", dates[i]);
@@ -85,6 +89,7 @@ public class InfoFragment extends Fragment {
                 R.layout.list_item,
                 new String[]{"title", "date"}, new int[]{R.id.itemTitle, R.id.itemDate});
         list.setAdapter(adapter);
+        list.setOnItemClickListener(this);
         return view;
     }
 
@@ -177,5 +182,19 @@ public class InfoFragment extends Fragment {
             out.append(buffer, 0, rsz);
         }
         return out.toString();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        HashMap<String,String> map = (HashMap<String, String>) list.getItemAtPosition(position);
+        String titleStr = map.get("title");
+
+        String link = links[position];
+        //Log.i(TAG,"onItemClick: "+link);
+        //打开新的activity
+        Intent Calc = new Intent(getActivity(),DetitleActivity.class);
+        Calc.putExtra("link",link);
+        startActivity(Calc);
+
     }
 }
