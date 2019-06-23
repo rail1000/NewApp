@@ -114,6 +114,7 @@ public class LectureFragment extends Fragment implements AdapterView.OnItemClick
             InputStream in = http.getInputStream();
 
             String html = inputStream2String(in);
+            in.close();
             Document doc = Jsoup.parse(html);
 
             Bundle bundle = new Bundle();

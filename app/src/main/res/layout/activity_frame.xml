@@ -38,20 +38,20 @@
         <RadioButton
             android:id="@+id/radioNews"
             style="@style/rg_btn_style"
-
+            android:drawableTop="@drawable/news"
             android:text="@string/raido_news_lable" />
 
         <RadioButton
             android:id="@+id/radioInfo"
             style="@style/rg_btn_style"
 
-
+            android:drawableTop="@drawable/info"
             android:text="@string/raido_info_lable" />
 
         <RadioButton
             android:id="@+id/radioLecture"
             style="@style/rg_btn_style"
-
+            android:drawableTop="@drawable/lecture"
             android:text="@string/raido_lecture_lable" />
 
     </RadioGroup>
