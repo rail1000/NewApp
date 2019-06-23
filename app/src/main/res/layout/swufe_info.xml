@@ -5,6 +5,8 @@
 
     android:orientation="vertical" >
 
+
+
     <ListView
         android:id="@+id/list_info"
         android:layout_width="match_parent"
